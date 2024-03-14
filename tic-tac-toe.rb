@@ -83,20 +83,42 @@ class Board
     self.draw_board
   end
 
-  def game_over?(player1piece, player2piece)
-    if (@row1[1] == player1piece && @row1[5] == player1piece && @row1[9] == player1piece) || (@row2[1] == player1piece && @row2[5] == player1piece && @row[9] == player1piece) || (@row3[1] == player1piece && @row3[5] == player1piece && @row3[9] == player1piece) || (@row3[1] == player1piece && @row2[5] == player1piece && @row1[9] == player1piece) || (@row1[1] == player1piece && @row2[5] == player1piece && @row3[9] == player1piece) || (@row1[1] == player2piece && @row1[5] == player2piece && @row1[9] == player2piece) || (@row2[1] == player2piece && @row2[5] == player2piece && @row[9] == player2piece) || (@row3[1] == player2piece && @row3[5] == player2piece && @row3[9] == player2piece) || (@row3[1] == player2piece && @row2[5] == player2piece && @row1[9] == player2piece) || (@row1[1] == player2piece && @row2[5] == player2piece && @row3[9] == player2piece)
-      true
-    else
-      false
-    end
+  def game_over?(player_piece)
+    winning_combinations = [
+      # Horizontal
+      [@row1[1], @row1[5], @row1[9]],
+      [@row2[1], @row2[5], @row2[9]],
+      [@row3[1], @row3[5], @row3[9]],
+      # Vertical
+      [@row1[1], @row2[1], @row3[1]],
+      [@row1[5], @row2[5], @row3[5]],
+      [@row1[9], @row2[9], @row3[9]],
+      # Diagonal
+      [@row1[1], @row2[5], @row3[9]],
+      [@row1[9], @row2[5], @row3[1]]
+    ]
+
+    winning_combinations.any? { |combo| combo.all? { |square| square == player_piece } }
   end
 
-  def play_game(player1, player2, player1piece, player2piece)
-    until game_over?(player2piece, player1piece)
-      self.player2turn(player2, player2piece)
-      self.player1turn(player1, player1piece)
-    end
+
+ def play_game(player1, player2, player1piece, player2piece)
+   until game_over?(player1piece) || game_over?(player2piece)
+        self.player2turn(player2, player2piece)
+        break if game_over?(player2piece)  # Check if player2 has won before player1's turn
+        self.player1turn(player1, player1piece)
+   end
+   if game_over?(player1piece)
+    puts "#{player1.name} wins!"
+   elsif game_over?(player2piece)
+    puts "#{player2.name} wins!"
+   elsif [@row1[1], @row1[5], @row1[9],
+    @row2[1], @row2[5], @row2[9],
+    @row3[1], @row3[5], @row3[9]].all? { |square| square != " " }
+    puts "It's a draw!"
+   end
   end
+
 end
 
 puts "Player 1, what's your name?"
