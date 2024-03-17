@@ -159,6 +159,7 @@ end
 our_board = Board.new(player1piece)
 
 player2piece = Piece.new(player1piece.player_piece == "X" ? "O" : "X")
+our_board.draw_board
 selected_square = player1.select_square(our_board)
 
 
