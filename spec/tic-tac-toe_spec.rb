@@ -1,10 +1,11 @@
-require './tic-tac-toe'
+require_relative '../tic-tac-toe'
 
 describe Board do
   describe "#game_over?" do
     subject(:game_end) { Board.new }
-    it "return true when any winning combo"
-    expect(game_end.game_over?).to eq(true)
+    it "return true when any winning combo" do
+      expect(game_end.game_over?).to eq(true)
+    end
   end
 end
 
